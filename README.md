@@ -5,7 +5,9 @@ Fastest Scalar&amp;Vector memmem() in C?!
 
 This is the C sourcecode of Railgun_Trolldom and Railgun_Nyotengu memmem-like functions.
 
-Also, a benchmark is included juxtaposing GLIBC memmem() to both Railguns.
+Also, a benchmark is included juxtaposing GLIBC memmem() to both Railguns, here come the results on my laptop running Fedora 39 Linux:
+
+![r3](https://github.com/user-attachments/assets/908d09bb-c4e9-4fd6-9d64-01ba141e5014)
 
 Enfun!    
 2025-Mar-02, Sanmayce
