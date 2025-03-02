@@ -7,7 +7,10 @@ This is the C sourcecode of Railgun_Trolldom and Railgun_Nyotengu memmem-like fu
 
 Also, a benchmark is included juxtaposing GLIBC memmem() to both Railguns, here come the results on my laptop running Fedora 39 Linux:
 
+
 ![r3](https://github.com/user-attachments/assets/908d09bb-c4e9-4fd6-9d64-01ba141e5014)
+
+I plan to boost the vector variant by replacing the 2,3 bytes Needle Length cases with vectorized code, now they are scalar...
 
 Enfun!    
 2025-Mar-02, Sanmayce
