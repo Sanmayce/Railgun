@@ -13,7 +13,6 @@ Also, a benchmark is included juxtaposing GLIBC memmem() to both Railguns, here 
 I plan to boost the vector variant by replacing the 2,3 bytes Needle Length cases with vectorized code, now they are scalar...
 
 Oh, and the old place where the Railgun was crafted:
-
 https://www.codeproject.com/Articles/250566/Fastest-strstr-like-function-in-C
 
 Enfun!    
