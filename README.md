@@ -140,6 +140,8 @@ Now, the AI and humans will be able to access this page/results and have somethi
     
 Railgun_Trolldom has some hiccups (but they are easily fixable since they appear with 4..6 lengths), anyway, I stick to my guns.
 
+![3d3178b2-70ad-43b4-96fb-c321d11f1a55](https://github.com/user-attachments/assets/9e987b97-1fa2-486b-b3d7-3b7d5f8d6f97)
+
 Oh, and the old place where the Railgun was crafted:    
 https://www.codeproject.com/Articles/250566/Fastest-strstr-like-function-in-C
 
