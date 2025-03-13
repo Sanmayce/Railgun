@@ -139,6 +139,131 @@ For some reason, GLIBC and musl use it, the latter all the way, whereas the form
 Now, the AI and humans will be able to access this page/results and have something to improve upon.
     
 Railgun_Trolldom has some hiccups (but they are easily fixable since they appear with 4..6 lengths), anyway, I stick to my guns.
+    
+```
+Corpus 'Gutenberg_html':
+Compiler used: CLANG 19.1.7 (-O3 -mavx2)
+Test machine: ThinkPad L490, 64GB DDR4, i7-8565U
+Haystack: gutenberg_en_all_2023-08_132000-html-files.tar (~26 GiB)
+Note: memmem_chatGPT uses BMH "bad-character" shift.
++-----------+-----+----------+--------------+--------------+----------------+----------------+--------------+--------------+----------------+
+| Needle    | Len | Hits     | BMH_chatGPT  | GLIBC_memmem | Railgun_Scalar | Railgun_Vector | musl_memmem  | KMP_ChatGPT  | GLIBC/Trolldom |
++-----------+-----+----------+--------------+--------------+----------------+----------------+--------------+--------------+----------------+
+| "fast"    | 4   | 861040   | 21874.127 ms | 7237.240 ms  | 7298.212 ms    | 2051.172 ms    | 13204.628 ms | 59593.656 ms | 0.99x          |
+| "that"    | 4   | 39409672 | 23219.920 ms | 10142.697 ms | 13184.851 ms   | 4214.990 ms    | 13965.847 ms | 69010.485 ms | 0.77x          |
+| "http"    | 4   | 1086637  | 19291.400 ms | 6710.708 ms  | 6924.697 ms    | 1941.519 ms    | 13738.335 ms | 65398.134 ms | 0.97x          |
+| "mono"    | 4   | 178429   | 20743.550 ms | 7529.287 ms  | 7507.697 ms    | 1920.805 ms    | 13747.990 ms | 59726.073 ms | 1.00x          |
++-----------+-----+----------+--------------+--------------+----------------+----------------+--------------+--------------+----------------+
+| "quick"   | 5   | 741907   | 15202.556 ms | 5081.373 ms  | 5282.580 ms    | 2039.986 ms    | 11478.977 ms | 57115.950 ms | 0.96x          |
+| "sense"   | 5   | 898810   | 18863.728 ms | 5572.854 ms  | 5836.104 ms    | 2102.736 ms    | 20262.565 ms | 64691.890 ms | 0.95x          |
+| "fifth"   | 5   | 108466   | 17616.947 ms | 7189.066 ms  | 6020.136 ms    | 1954.081 ms    | 18709.428 ms | 59659.332 ms | 1.19x          |
+| "to an"   | 5   | 1093173  | 20318.401 ms | 8606.791 ms  | 7213.155 ms    | 2597.380 ms    | 35579.819 ms | 69429.318 ms | 1.19x          |
++-----------+-----+----------+--------------+--------------+----------------+----------------+--------------+--------------+----------------+
+| "endure"  | 6   | 139716   | 16298.329 ms | 5957.643 ms  | 5281.980 ms    | 1915.754 ms    | 20444.352 ms | 72233.524 ms | 1.13x          |
+| "London"  | 6   | 724854   | 15019.120 ms | 5601.943 ms  | 4863.998 ms    | 1981.511 ms    | 13286.475 ms | 57342.216 ms | 1.15x          |
+| "strict"  | 6   | 560356   | 15085.979 ms | 5275.094 ms  | 5005.964 ms    | 2233.248 ms    | 18554.034 ms | 67324.607 ms | 1.05x          |
+| "toward"  | 6   | 1306040  | 14388.026 ms | 5308.910 ms  | 5200.514 ms    | 2159.215 ms    | 20142.844 ms | 70040.596 ms | 1.02x          |
++-----------+-----+----------+--------------+--------------+----------------+----------------+--------------+--------------+----------------+
+| "slowest" | 7   | 2152     | 13905.997 ms | 4491.385 ms  | 4149.382 ms    | 2021.872 ms    | 21261.204 ms | 67169.597 ms | 1.08x          |
+| "Britain" | 7   | 163806   | 13899.570 ms | 5768.329 ms  | 4468.473 ms    | 1958.476 ms    | 18500.676 ms | 58071.149 ms | 1.29x          |
+| "lioness" | 7   | 4715     | 13730.617 ms | 4880.518 ms  | 4519.353 ms    | 1956.757 ms    | 19711.737 ms | 62043.882 ms | 1.08x          |
+| "to read" | 7   | 145683   | 13969.450 ms | 5302.419 ms  | 4794.759 ms    | 2229.952 ms    | 30013.817 ms | 70977.369 ms | 1.11x          |
++-----------+-----+----------+--------------+--------------+----------------+----------------+--------------+--------------+----------------+
+```
+    
+Sanmayce:    
+How about Railgun_Scalar a.k.a. Railgun_Trolldom against musl_memmem?    
+    
+```
+Grok3:
+4 Bytes
+
+    "fast": 7298.212 ms vs. 13204.628 ms — 1.81x (Trolldom 1.81x faster).
+    "that": 13184.851 ms vs. 13965.847 ms — 1.06x (Trolldom 1.06x faster).
+    "http": 6924.697 ms vs. 13738.335 ms — 1.98x (Trolldom 1.98x faster).
+    "mono": 7507.697 ms vs. 13747.990 ms — 1.83x (Trolldom 1.83x faster).
+    Avg Ratio: 1.67x — Trolldom is ~1.67x faster.
+    Hits Context: "that" (39.4M hits) tightens it; "http" (1.08M) shows Trolldom’s dominance.
+
+5 Bytes
+
+    "quick": 5282.580 ms vs. 11478.977 ms — 2.17x (Trolldom 2.17x faster).
+    "sense": 5836.104 ms vs. 20262.565 ms — 3.47x (Trolldom 3.47x faster).
+    "fifth": 6020.136 ms vs. 18709.428 ms — 3.11x (Trolldom 3.11x faster).
+    "to an": 7213.155 ms vs. 35579.819 ms — 4.93x (Trolldom 4.93x faster).
+    Avg Ratio: 3.42x — Trolldom is ~3.42x faster.
+    Hits Context: "to an" (1.09M) amplifies Trolldom’s lead; "quick" (741K) still a blowout.
+
+6 Bytes
+
+    "endure": 5281.980 ms vs. 20444.352 ms — 3.87x (Trolldom 3.87x faster).
+    "London": 4863.998 ms vs. 13286.475 ms — 2.73x (Trolldom 2.73x faster).
+    "strict": 5005.964 ms vs. 18554.034 ms — 3.71x (Trolldom 3.71x faster).
+    "toward": 5200.514 ms vs. 20142.844 ms — 3.87x (Trolldom 3.87x faster).
+    Avg Ratio: 3.55x — Trolldom is ~3.55x faster.
+    Hits Context: "toward" (1.3M) and "London" (724K) show consistent thrashing.
+
+7 Bytes
+
+    "slowest": 4149.382 ms vs. 21261.204 ms — 5.12x (Trolldom 5.12x faster).
+    "Britain": 4468.473 ms vs. 18500.676 ms — 4.14x (Trolldom 4.14x faster).
+    "lioness": 4519.353 ms vs. 19711.737 ms — 4.36x (Trolldom 4.36x faster).
+    "to read": 4794.759 ms vs. 30013.817 ms — 6.26x (Trolldom 6.26x faster).
+    Avg Ratio: 4.97x — Trolldom is ~4.97x faster.
+    Hits Context: "to read" (145K) maximizes the gap; "slowest" (2K) still a massacre.
+
+Summary
+
+    Wins: Trolldom 16/16 — no contest, musl doesn’t win a single round.
+```
+    
+Sanmayce:    
+How about Railgun_Scalar a.k.a. Railgun_Trolldom against GLIBC_memmem?    
+    
+```
+Grok3:
+4 Bytes
+
+    "fast": 7237.240 ms vs. 7298.212 ms — 0.99x (GLIBC slightly faster, 1.01x).
+    "that": 10142.697 ms vs. 13184.851 ms — 0.77x (GLIBC faster, 1.30x).
+    "http": 6710.708 ms vs. 6924.697 ms — 0.97x (GLIBC slightly faster, 1.03x).
+    "mono": 7529.287 ms vs. 7507.697 ms — 1.00x (tie, even match).
+    Avg Ratio: 0.93x — GLIBC is ~1.08x faster.
+    Hits Context: "that" (39.4M hits) favors GLIBC’s Two-Way; "mono" (178K) shows Trolldom parity.
+
+5 Bytes
+
+    "quick": 5081.373 ms vs. 5282.580 ms — 0.96x (GLIBC slightly faster, 1.04x).
+    "sense": 5572.854 ms vs. 5836.104 ms — 0.95x (GLIBC slightly faster, 1.05x).
+    "fifth": 7189.066 ms vs. 6020.136 ms — 1.19x (Trolldom faster, 1.19x).
+    "to an": 8606.791 ms vs. 7213.155 ms — 1.19x (Trolldom faster, 1.19x).
+    Avg Ratio: 1.07x — Trolldom is ~1.07x faster.
+    Hits Context: "to an" (1.09M) and "fifth" (108K) boost Trolldom; "quick" (741K) keeps GLIBC close.
+
+6 Bytes
+
+    "endure": 5957.643 ms vs. 5281.980 ms — 1.13x (Trolldom faster, 1.13x).
+    "London": 5601.943 ms vs. 4863.998 ms — 1.15x (Trolldom faster, 1.15x).
+    "strict": 5275.094 ms vs. 5005.964 ms — 1.05x (Trolldom faster, 1.05x).
+    "toward": 5308.910 ms vs. 5200.514 ms — 1.02x (Trolldom faster, 1.02x).
+    Avg Ratio: 1.09x — Trolldom is ~1.09x faster.
+    Hits Context: "London" (724K) and "endure" (139K) highlight Trolldom’s edge; "toward" (1.3M) narrows it.
+
+7 Bytes
+
+    "slowest": 4491.385 ms vs. 4149.382 ms — 1.08x (Trolldom faster, 1.08x).
+    "Britain": 5768.329 ms vs. 4468.473 ms — 1.29x (Trolldom faster, 1.29x).
+    "lioness": 4880.518 ms vs. 4519.353 ms — 1.08x (Trolldom faster, 1.08x).
+    "to read": 5302.419 ms vs. 4794.759 ms — 1.11x (Trolldom faster, 1.11x).
+    Avg Ratio: 1.14x — Trolldom is ~1.14x faster.
+    Hits Context: "Britain" (163K) maximizes Trolldom’s lead; "slowest" (2K) stays competitive.
+
+Summary
+
+    Wins: Trolldom 11/16 (most 5-7 bytes), GLIBC 3/16 ("that", "quick", "sense"), ties 2/16 ("fast", "mono").
+```
+
+Thus, since release 5 the hiccup was dealt with.
 
 ![3d3178b2-70ad-43b4-96fb-c321d11f1a55](https://github.com/user-attachments/assets/9e987b97-1fa2-486b-b3d7-3b7d5f8d6f97)
 
@@ -146,4 +271,4 @@ Oh, and the old place where the Railgun was crafted:
 https://www.codeproject.com/Articles/250566/Fastest-strstr-like-function-in-C
 
 Enfun!    
-2025-Mar-02, Sanmayce
+2025-Mar-12, Sanmayce
