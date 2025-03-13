@@ -139,7 +139,10 @@ For some reason, GLIBC and musl use it, the latter all the way, whereas the form
 Now, the AI and humans will be able to access this page/results and have something to improve upon.
     
 Railgun_Trolldom has some hiccups (but they are easily fixable since they appear with 4..6 lengths), anyway, I stick to my guns.
-    
+
+Update from 2025-Mar-12:    
+The hiccups were due to the 15 years old code (the target was the Core 2) which fetched one DWORD at a time and using shifting - this proves slower on modern CPUs, I raised Railgun_Doublet's order to 4 thus tailoring Railgun_Tetralet which was much faster than the fastest Railgun_Quadruplet, however both Tetra and Quadro are brutally outperformed by my old Railgun_BMH2 (with 8KB table), as I said before the tweaking in old Railgun_Trolldom was a matter of shuffling IFs i.e. usecases to be handled properly by old functions of mine. I saw that latest 2.41 GLIBC uses some kind of BMH order 2 (with atavistic hashing) for needles up to 255, this is inferior to the more powerful full order 2, however when millions of hits occur this means that latency (the warm-up) is higher - I have to initialize bigger table, again, I stick to my guns as in the old time 15 years ago.   
+
 ```
 Corpus 'Gutenberg_html':
 Compiler used: CLANG 19.1.7 (-O3 -mavx2)
