@@ -143,6 +143,7 @@ Railgun_Trolldom has some hiccups (but they are easily fixable since they appear
 Update from 2025-Mar-12:    
 The hiccups were due to the 15 years old code (the target was the Core 2) which fetched one DWORD at a time and using shifting - this proves slower on modern CPUs, I raised Railgun_Doublet's order to 4 thus tailoring Railgun_Tetralet which was much faster than the fastest Railgun_Quadruplet, however both Tetra and Quadro are brutally outperformed by my old Railgun_BMH2 (with 8KB table), as I said before the tweaking in old Railgun_Trolldom was a matter of shuffling IFs i.e. usecases to be handled properly by old functions of mine. I saw that latest 2.41 GLIBC uses some kind of BMH order 2 (with atavistic hashing) for needles up to 255, this is inferior to the more powerful full order 2, however when millions of hits occur this means that latency (the warm-up) is higher - I have to initialize bigger table, again, I stick to my guns as in the old time 15 years ago.   
 
+
 ```
 Corpus 'Gutenberg_html':
 Compiler used: CLANG 19.1.7 (-O3 -mavx2)
@@ -266,7 +267,7 @@ Summary
     Wins: Trolldom 11/16 (most 5-7 bytes), GLIBC 3/16 ("that", "quick", "sense"), ties 2/16 ("fast", "mono").
 ```
 
-Thus, since release 5 the hiccup was dealt with.
+Thus, since release 6 the hiccup was dealt with.
 
 ![3d3178b2-70ad-43b4-96fb-c321d11f1a55](https://github.com/user-attachments/assets/9e987b97-1fa2-486b-b3d7-3b7d5f8d6f97)
 
