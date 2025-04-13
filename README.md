@@ -302,8 +302,11 @@ ________________    _______________________________ ____________________        
 In search for the FASTEST memmem()... finding needles in haystacks, FAST!
     
 Tested datafile: gutenberg_en_all_2023-08_132000-html-files.tar, 26,914,119,680 bytes;
+    
 Tested machine: ThinkPad L490, i7-8565U "Whiskey Lake", TDP: 15 W (MAX 25 W), 14 nm, Max Turbo: 4,600 MHz, 2x32 GB DDR4 2400 MT/s, Linux Fedora 39;
+    
 Tested memmem-functions: BMH (order 1), GLIBC 2.38, Scalar and Vector Railguns, MUSL, KMP;
+    
 Tested compiler: CLANG 18.1.8, using -O3 -mavx2;
     
 ```
@@ -365,11 +368,17 @@ Tested compiler: CLANG 18.1.8, using -O3 -mavx2;
 ```
     
 Note1: The numbers are in MiB/s, all results are obtained as superuser/root with maximum niceness -20; 
+    
 Note2: 'BMH' and 'KMP' were written by chatGPT;
+    
 Note3: '*' denotes fastest result within the row;
+    
 Note4: Last needle (since it is > 256) is searched by Two-Way within the GLIBC, otherwise by pseudo-BMH order 2;
+    
 Note5: For range 8..12 long needles, Trolldom gets even faster because the my true BMH2 bitwise gains momentum;
+    
 Note6: The Trolldom's actual (for needles == 4) ASM code executed in this benchmark is this:
+    
 ```
 	cmp	ebx, 4
 	jne	.LBB17_18
@@ -407,4 +416,4 @@ Note6: The Trolldom's actual (for needles == 4) ASM code executed in this benchm
 Bottomline: Railgun 'Trolldom' is the fastest SCALAR hitter, with few hiccups/jams.
 
 Enfun!    
-2025-Mar-12, Sanmayce
+2025-Apr-12, Sanmayce
