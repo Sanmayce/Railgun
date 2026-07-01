@@ -418,5 +418,5 @@ Bottomline: Railgun 'Trolldom' is the fastest SCALAR hitter, with few hiccups/ja
 Enfun!    
 2025-Apr-12, Sanmayce
 
-Add-on:
-https://godbolt.org/z/xc1dPKdzd
+Add-on (2026-Jul-01):
+https://godbolt.org/z/z8fWvT88M
