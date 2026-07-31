@@ -428,7 +428,7 @@ The benchmark (fuzzorama.c) uses 25GB tarred 132000 html files from the Project 
 
 <img width="768" height="1280" alt="Schatzhauser_logo" src="https://github.com/user-attachments/assets/e3d23103-ca1d-4992-99f2-3d8cd58676a3" />
 ```
-// 'Railgun_Schatzhauser_AVX2' - The Fastest Fuzzy Finder for Levenshtein Distance <=2 
+// Railgun_Schatzhauser_AVX2 - The Fastest Fuzzy Finder for Levenshtein Distance <=2 
 // Testmachine: i7-11850H (16 threads) 4x32GB DDR4, GCC v15.2.1
 // Tested in Performance Mode, with highest niceness
 /*
