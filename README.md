@@ -421,17 +421,17 @@ Enfun!
 Add-on (2026-Jul-01):
 https://godbolt.org/z/z8fWvT88M
 
-Add-on (2026-Jul-31):
+Add-on (2026-Jul-31):    
 Fastest FUZZY memmem() in C?!
-
+    
 The benchmark (fuzzorama.c) uses 25GB tarred 132000 html files from the Project Gutenberg to test few needles with different Levenshtein/edit distances.
 
 <img width="768" height="1280" alt="Schatzhauser_logo" src="https://github.com/user-attachments/assets/e3d23103-ca1d-4992-99f2-3d8cd58676a3" />
 ```
-// Railgun_Schatzhauser_AVX2 - The Fastest Fuzzy Finder for Levenshtein Distance <=2 
-// Testmachine: i7-11850H (16 threads) 4x32GB DDR4, GCC v15.2.1
-// Tested in Performance Mode, with highest niceness
-/*
+Railgun_Schatzhauser_AVX2 - The Fastest Fuzzy Finder for Levenshtein Distance <=2 
+Testmachine: i7-11850H (16 threads) 4x32GB DDR4, GCC v15.2.1
+Tested in Performance Mode, with highest niceness
+
 MULTI-THREADED SHOWDOWN (16 Cores Engaged):
 
 +-------------+--------------+--------------------+---------------------------+---------------------+
@@ -475,11 +475,11 @@ SINGLE-THREADED SHOWDOWN (1 Core Engaged):
 +-------------+--------------+--------------------+---------------------------+---------------------+
 |   9 bytes   |      3       |        357.32      |           234.93          |        0.66x        |
 +-------------+--------------+--------------------+---------------------------+---------------------+
-*/
-// For K=2:
-// Note1: Needle (7 bytes) "Quixote", yields 93,752 hits;
-// Note2: Needle (12 bytes) "Schatzhauser", yields 46 hits;
-// Note3: Needle (9 bytes) "Gutenberg", yields 3,322,534 hits;
+
+For K=2:
+Note1: Needle (7 bytes) "Quixote", yields 93,752 hits;
+Note2: Needle (12 bytes) "Schatzhauser", yields 46 hits;
+Note3: Needle (9 bytes) "Gutenberg", yields 3,322,534 hits;
 ```
 
 https://godbolt.org/z/oKxGGv7zW
