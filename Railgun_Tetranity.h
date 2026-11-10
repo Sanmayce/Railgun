@@ -1,4 +1,5 @@
-// Railgun_Tetranity.h
+// Railgun_Tetranity.h, bug-fixed (failing to find a match appearing at the end when primalized) by Claude AI in 2026-Nov-09.
+// In the scalar engine (needles over 32 bytes), when the needle is "primalized" to a shorter substring, an occurrence that ends exactly at the end of the haystack is missed. For example, 40 × `v` in a haystack that ends right after it returns NULL, but with one extra byte after it, it's found. The cause is the bound check, which demands one byte too many. It appears in both the order-2 and the order-4 pathway.
 
 /*
 The "needle in the haystack" problem has a rich history spanning over
@@ -443,7 +444,13 @@ void *Railgun_Tetranity_AVX2(const unsigned char *h, size_t h_len, const unsigne
                         if (cbPattern != PRIMALlengthCANDIDATE) { 
                             if (count <= 0) {
                                 if (((signed long long)(i - (PRIMALposition - 1)) >= 0) && 
+// Ugh, Claude AI found this bug in 2026-Nov-09, the commented line is to be replaced with:
+// As written, it works out to 'start + length + 1 <= end', so it demands one extra byte after the needle. An occurrence ending exactly at the last haystack byte gets rejected, and the function returns NULL.
+/*
                                     (&pbTarget[i - (PRIMALposition - 1)] + (PRIMALlengthCANDIDATE - 3) <= pbTargetMax - 4)) { 
+*/
+                                    (&pbTarget[i - (PRIMALposition - 1)] + PRIMALlengthCANDIDATE <= pbTargetMax)) { 
+
                                     if (*(const uint32_t *)&pbTarget[i - (PRIMALposition - 1)] == *(const uint32_t *)(pbPattern - (PRIMALposition - 1))) { 
                                         count = PRIMALlengthCANDIDATE - 4 + 1; 
                                         while (count > 0 && *(const uint32_t *)(pbPattern - (PRIMALposition - 1) + count - 1) == *(const uint32_t *)(&pbTarget[i - (PRIMALposition - 1)] + (count - 1))) {
@@ -493,7 +500,12 @@ void *Railgun_Tetranity_AVX2(const unsigned char *h, size_t h_len, const unsigne
                         if (cbPattern != PRIMALlengthCANDIDATE) {
                             if (count <= 0) {
                                 if (((signed long long)(i - (PRIMALposition - 1)) >= 0) && 
-                                    (&pbTarget[i - (PRIMALposition - 1)] + (PRIMALlengthCANDIDATE - 3) <= pbTargetMax - 4)) {
+// Ugh, Claude AI found this bug in 2026-Nov-09, the commented line is to be replaced with:
+// As written, it works out to 'start + length + 1 <= end', so it demands one extra byte after the needle. An occurrence ending exactly at the last haystack byte gets rejected, and the function returns NULL.
+/*
+                                    (&pbTarget[i - (PRIMALposition - 1)] + (PRIMALlengthCANDIDATE - 3) <= pbTargetMax - 4)) { 
+*/
+                                    (&pbTarget[i - (PRIMALposition - 1)] + PRIMALlengthCANDIDATE <= pbTargetMax)) { 
                                     if (*(const uint32_t *)&pbTarget[i - (PRIMALposition - 1)] == *(const uint32_t *)(pbPattern - (PRIMALposition - 1))) {
                                         count = PRIMALlengthCANDIDATE - 4 + 1;
                                         while (count > 0 && *(const uint32_t *)(pbPattern - (PRIMALposition - 1) + count - 1) == *(const uint32_t *)(&pbTarget[i - (PRIMALposition - 1)] + (count - 1))) {
